@@ -1,0 +1,7 @@
+mysql:
+  database: mysql
+  host: localhost
+  user: root
+  password: Mysqlbz8891751
+  port: 5801
+  databasename: sessions

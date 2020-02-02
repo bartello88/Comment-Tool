@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<body>
+<h1>Session's Comment</h1>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages%}
+                {% if category == 'success'%}
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <strong>¡Hola! user</strong>{{message}}
+                        </button>
+                    </div>
+                {% endif %}
+                 {% if category == 'error'%}
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <strong>!Hola! user</strong>{{message}}
+                        </button>
+                    </div>
+                {% endif %}
+                 {% if category == 'warning'%}
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <strong>!Hola! user</strong>{{message}}
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form action="addComent" method="post">
+        <textarea class="form-control textarea" name="text">{{text}}</textarea>
+        <select class="form-control" name="option">
+            <option value="rejected 2nd time - to be re-collected">rejected 2nd time - to be re-collected</option>
+            <option value="corrupted session - copy requested">corrupted session - copy requested</option>
+            <option value="junk session">junk session</option>
+            <option value="test session">test session</option>
+            <option value="rejected by QC">rejected by QC</option>
+            <option value="rejected by OTM">rejected by OTM</option>
+            <option value="waiting for a backup">waiting for a backup</option>
+            <option value="data lost">data lost</option>
+            <option value="">none</option>
+        </select>
+        <button id="button" class="btn btn-success" name="comment">Comment</button>
+    </form>
+    <div class="session-container">
+    {% if sessions_exists_in_database %}
+        <div class="session-list good-sessions">
+            <legend>Success</legend>
+            <ul>
+                {% for session in sessions_exists_in_database %}
+                <li><b>{{session}}</b> has been commented as <b>{{option}}</b></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if wrong_sessions %}
+        <div class="session-list wrong-sessions">
+            <legend>Wrong</legend>
+                 <ul>
+                {% for session in wrong_sessions %}
+                     <li><p><b>{{session}}</b>: something is NO YES</p></li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+</div>
+
+
+<script type="text/javascript" src="{{ url_for('static', filename ='script.js') }}"></script>
+</body>
+{% endblock %}
