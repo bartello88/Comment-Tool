@@ -19,7 +19,7 @@ button{
 strong{
     float: right;
 }
-h1{
+h1 ,h5{
     text-align: center;
 }
 #button{
@@ -58,4 +58,5 @@ li{
 .wrong-sessions{
      background-color: #FFCCCC;
      margin: 15px 0 15px 0;
+     line-height1.2;
 }

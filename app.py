@@ -37,7 +37,7 @@ def addComment():
             if request.form['text']:
                 list_of_sessions = request.form['text']
                 comment_to_selects = request.form['option']
-                sessions_without_quote = list_of_sessions.replace("'", '').replace('\r\n', '').replace('"', '')
+                sessions_without_quote = list_of_sessions.replace("'", '').replace('\r\n', '\n').replace('"', '')
                 result = prepareSessions(sessions_without_quote)
                 correct_sessions = [session.strip() for session in result if session]
 
@@ -77,7 +77,9 @@ def prepareSessions(sessions_without_quote):
         result = sessions_without_quote.split(',')
     elif '\t' in sessions_without_quote:
         result = sessions_without_quote.split('\t')
-    elif ' ' in sessions_without_quote:
+    elif '\n' in sessions_without_quote:
+        result = sessions_without_quote.split('\n')
+    else:
         result = sessions_without_quote.split(' ')
 
     return result
