@@ -1,5 +1,6 @@
-mysql:
+config:
   database: mysql
+  database_dialect: mysqldb
   host: localhost
   user: root
   password: Mysqlbz8891751

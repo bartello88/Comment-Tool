@@ -11,19 +11,23 @@ textarea {
     min-height: 200px;
     min-width: 300px;
     margin-bottom: 15px;
-        margin-top: 15px;
-    height: 50px;
-    background-color: #CCFFE5;
-    color: black;
-    transition: all 0.1s ease;
+
 }
 
-button {
+#button {
     width: 100%;
     text-align: center;
     left: 50%;
-    margin: auto;
+    margin-top: 15px;
+    height: 50px;
+    background-color: #CCFFE5;
+    color: black;
+    transition: all 0.2s ease;
 }
+#button:hover {
+    transform: scale(1.02);
+}
+
 
 strong {
     float: right;

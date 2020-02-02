@@ -7,7 +7,7 @@ from connection import getDatabaseCredentials
 app = Flask(__name__)
 
 connection = getDatabaseCredentials()
-database_uri = f"{connection['database']}+mysqldb://{connection['user']}:{connection['password']}@{connection['host']}/{connection['databasename']}"
+database_uri = f"{connection['database']}+{connection['database_dialect']}://{connection['user']}:{connection['password']}@{connection['host']}/{connection['databasename']}"
 app.secret_key = 'don tell anybody'
 
 
@@ -72,7 +72,6 @@ def addComment():
         return render_template('index.html', sessions_exists_in_database=sessions_exists_in_database,
                                wrong_sessions=wrong_sessions, option=comment_to_selects)
 
-
 # Getting current list of sessions
 def prepareSessions(sessions_without_quote):
     if ', ' in sessions_without_quote:
@@ -87,4 +86,3 @@ def prepareSessions(sessions_without_quote):
         result = sessions_without_quote.split(' ')
 
     return result
-
