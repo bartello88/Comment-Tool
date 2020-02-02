@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
 from connection import getDatabaseCredentials
 
-
 # Start Flask app
 app = Flask(__name__)
 
@@ -58,15 +57,18 @@ def addComment():
                     except AttributeError as e:
                         print(e)
                 good_sessions_len = len(sessions_exists_in_database)
-                if len(wrong_sessions)> 0:
-                    flash(f"You have just commented {good_sessions_len} sessions and have {len(wrong_sessions)} issue(s)", 'warning')
+                if len(wrong_sessions) > 0:
+                    flash(
+                        f"You have just commented {good_sessions_len} sessions and have {len(wrong_sessions)} issue(s)",
+                        'warning')
                 else:
                     flash(f"You have just commented {good_sessions_len} sessions", 'success')
             else:
                 flash("You didn't provide sessions amigo", 'error')
                 return render_template('index.html')
 
-        return render_template('index.html', sessions_exists_in_database=sessions_exists_in_database, wrong_sessions=wrong_sessions, option=comment_to_selects)
+        return render_template('index.html', sessions_exists_in_database=sessions_exists_in_database,
+                               wrong_sessions=wrong_sessions, option=comment_to_selects)
 
 
 # Getting current list of sessions
@@ -83,5 +85,3 @@ def prepareSessions(sessions_without_quote):
         result = sessions_without_quote.split(' ')
 
     return result
-
-
