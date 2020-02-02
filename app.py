@@ -88,5 +88,3 @@ def prepareSessions(sessions_without_quote):
 
     return result
 
-def sometething():
-    pass
