@@ -9,6 +9,7 @@ app = Flask(__name__)
 connection = getDatabaseCredentials()
 database_uri = f"{connection['database']}+mysqldb://{connection['user']}:{connection['password']}@{connection['host']}/{connection['databasename']}"
 app.secret_key = 'don tell anybody'
+
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root:Mysqlbz8891751@localhost/sessions'
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 db = SQLAlchemy(app)
