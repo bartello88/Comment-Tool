@@ -87,3 +87,6 @@ def prepareSessions(sessions_without_quote):
         result = sessions_without_quote.split(' ')
 
     return result
+
+def sometething():
+    pass
