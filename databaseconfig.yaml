@@ -6,3 +6,4 @@ config:
   password: Mysqlbz8891751
   port: 5801
   databasename: sessions
+  table: sessions_to_comment

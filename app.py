@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request, flash, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
-from connection import getDatabaseCredentials
+from connection import getDatabaseCredentialsFromYAML
 
 # Start Flask app
 app = Flask(__name__)
 
-connection = getDatabaseCredentials()
+connection = getDatabaseCredentialsFromYAML()
 database_uri = f"{connection['database']}+{connection['database_dialect']}://{connection['user']}:{connection['password']}@{connection['host']}/{connection['databasename']}"
 app.secret_key = 'don tell anybody'
 
@@ -86,3 +86,6 @@ def prepareSessions(sessions_without_quote):
         result = sessions_without_quote.split(' ')
 
     return result
+
+def something():
+    pass

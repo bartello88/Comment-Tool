@@ -1,7 +1,7 @@
 import yaml
 
 
-def getDatabaseCredentials():
+def getDatabaseCredentialsFromYAML():
     with open('databaseconfig.yaml', 'r') as file:
         data = yaml.load(file, Loader=yaml.FullLoader)
         connection = {}
@@ -12,4 +12,5 @@ def getDatabaseCredentials():
         connection['password'] = data['config']['password']
         connection['port'] = data['config']['port']
         connection['databasename'] = data['config']['databasename']
+        connection['table_name'] = data['config']['table']
     return connection
