@@ -72,6 +72,8 @@ def addComment():
         return render_template('index.html', sessions_exists_in_database=sessions_exists_in_database,
                                wrong_sessions=wrong_sessions, option=comment_to_selects)
 
+if __name__ == '__name__':
+    app.run()
 # Getting current list of sessions
 def prepareSessions(sessions_without_quote):
     if ', ' in sessions_without_quote:
@@ -86,6 +88,3 @@ def prepareSessions(sessions_without_quote):
         result = sessions_without_quote.split(' ')
 
     return result
-
-def something():
-    pass

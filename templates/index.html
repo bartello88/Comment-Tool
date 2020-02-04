@@ -3,7 +3,7 @@
 
 <body>
 <h1>Session's Comment</h1>
-<h5>Provide sessions splited by coma, space or new line</h5>
+<h5>Provide sessions splited by comma, space or new line</h5>
 <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -11,19 +11,19 @@
                 {% if category == 'success'%}
                     <div class="alert alert-success alert-dismissible" role="alert">
                         <strong>¡Hola! user</strong>{{message}}
-                        </button>
+
                     </div>
                 {% endif %}
                  {% if category == 'error'%}
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <strong>!Hola! user</strong>{{message}}
-                        </button>
+
                     </div>
                 {% endif %}
                  {% if category == 'warning'%}
                     <div class="alert alert-warning alert-dismissible" role="alert">
                         <strong>!Hola! user</strong>{{message}}
-                        </button>
+
                     </div>
                 {% endif %}
             {% endfor %}
