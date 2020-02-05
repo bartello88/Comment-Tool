@@ -11,6 +11,6 @@ def getDatabaseCredentialsFromYAML():
         connection['user'] = data['config']['user']
         connection['password'] = data['config']['password']
         connection['port'] = data['config']['port']
-        connection['databasename'] = data['config']['databasename']
-        connection['table_name'] = data['config']['table']
+        connection['database_name'] = data['config']['database_name']
+        connection['table_name'] = data['config']['table_name']
     return connection

@@ -7,7 +7,7 @@ from connection import getDatabaseCredentialsFromYAML
 app = Flask(__name__)
 
 connection = getDatabaseCredentialsFromYAML()
-database_uri = f"{connection['database']}+{connection['database_dialect']}://{connection['user']}:{connection['password']}@{connection['host']}/{connection['databasename']}"
+database_uri = f"{connection['database']}+{connection['database_dialect']}://{connection['user']}:{connection['password']}@{connection['host']}/{connection['database_name']}"
 app.secret_key = 'don tell anybody'
 
 
@@ -22,6 +22,7 @@ db = SQLAlchemy(app)
 # Map datatable to class
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
+table_name = f"Base.classes.{connection['table_name']}"
 Sessions = Base.classes.sessions_to_comment
 
 
