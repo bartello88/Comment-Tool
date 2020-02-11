@@ -1,9 +1,23 @@
-config:
-  database: mysql
-  database_dialect: mysqldb
-  host: localhost
-  user: root
-  password: Mysqlbz8891751
-  port: 5801
-  database_name: sessions
-  table_name: sessions_to_comment
+# MySQL
+
+
+#database: mysql
+#database_dialect: mysqldb
+#host: localhost
+#user: root
+#password: Mysqlbz8891751
+#port: 5801
+#database_name: sessions
+#table_name: sessions_to_comment
+
+# Postgres
+
+#config:
+database: postgresql
+database_dialect: psycopg2
+host: plsrvup-sxd01.ttg.global
+user: sxd
+password: sxd
+port: 5432
+database_name: statistics
+table_name: comments

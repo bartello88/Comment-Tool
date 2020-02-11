@@ -1,29 +1,63 @@
 from flask import Flask, render_template, request, flash, redirect, jsonify
+import psycopg2
+#--------------------------------------------------------
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
-from connection import getDatabaseCredentialsFromYAML
+from sqlalchemy import create_engine
+from connection import get_database_credentials_from_YAML
+#--------------------------------------------------------
 
 # Start Flask app
 app = Flask(__name__)
-
-connection = getDatabaseCredentialsFromYAML()
-database_uri = f"{connection['database']}+{connection['database_dialect']}://{connection['user']}:{connection['password']}@{connection['host']}/{connection['database_name']}"
 app.secret_key = 'don tell anybody'
 
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root:Mysqlbz8891751@localhost/sessions'
-app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
-db = SQLAlchemy(app)
+#--------------------------------------------------------
+# connection = get_database_credentials_from_YAML()
+# database_uri = f"{connection['database']}+{connection['database_dialect']}://{connection['user']}:{connection['password']}@{connection['host']}/{connection['database_name']}"
 
-# Map to table
-# queryy = db.Table('sessions_to_comment', db.metadata, autoload=True, autoload_with=db.engine)
+# print(database_uri)
+#
+# # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqldb://root:Mysqlbz8891751@localhost/sessions'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
+# db = SQLAlchemy(app)
+#
+# print(connection)
+# # Map to table
+# # queryy = db.Table('sessions_to_comment', db.metadata, autoload=True, autoload_with=db.engine)
+#
+# schema = 'moma_reporting'
+# # Map datatable to class
+# Base = automap_base()
+# engine = create_engine('postgresql+psycopg2://sxd:sxd@plsrvup-sxd01.ttg.global/statistics',connect_args={'options':'-csearch_path={}'.format(schema)})
+# Base.prepare(engine, reflect=True)
+# # table_name = f"Base.classes.{connection['table_name']}"
+# Sessions = Base.classes.comments
+# print(Sessions)
+#--------------------------------------------------------
 
+try:
+    connection_string= "dbname='statistics' user='sxd' host='plsrvup-sxd01.ttg.global' password='sxd'"
+    conn = psycopg2.connect(connection_string)
+    print("Database connected")
+except Exception as e:
+    print(e)
 
-# Map datatable to class
-Base = automap_base()
-Base.prepare(db.engine, reflect=True)
-table_name = f"Base.classes.{connection['table_name']}"
-Sessions = Base.classes.sessions_to_comment
+# Getting current list of sessions
+def prepareSessions(sessions_without_quote):
+    if ', ' in sessions_without_quote:
+        result = sessions_without_quote.split(', ')
+    elif ',' in sessions_without_quote:
+        result = sessions_without_quote.split(',')
+    elif '\t' in sessions_without_quote:
+        result = sessions_without_quote.split('\t')
+    elif '\n' in sessions_without_quote:
+        result = sessions_without_quote.split('\n')
+    else:
+        result = sessions_without_quote.split(' ')
+
+    return result
 
 
 @app.route('/')
@@ -42,23 +76,22 @@ def addComment():
                 sessions_without_quote = list_of_sessions.replace("'", '').replace('\r\n', '\n').replace('"', '')
                 result = prepareSessions(sessions_without_quote)
                 correct_sessions = [session.strip() for session in result if session]
-
                 # update session's comment
+                cur = conn.cursor()
                 wrong_sessions = []
                 sessions_exists_in_database = []
                 for session in correct_sessions:
-                    try:
-                        if db.session.query(Sessions).filter_by(session_name=session).first() is not None:
-                            conn = db.session.query(Sessions).filter_by(session_name=session).first()
-                            conn.session_comment = comment_to_selects
-                            db.session.commit()
-                            print(f"Session {session} has been commented sucessfully")
-                            sessions_exists_in_database.append(session)
-                        else:
-                            print(f"Session {session} doesn't exists")
-                            wrong_sessions.append(session)
-                    except AttributeError as e:
-                        print(e)
+                    cur.execute(f"""SELECT * FROM moma_reporting.comments WHERE "sessionname" LIKE '{session}'""")
+                    result= cur.fetchone()
+                    if result is not None:
+                        cur.execute(
+                            f"""UPDATE moma_reporting.comments SET comment = '{comment_to_selects}' WHERE sessionname like '{session}'""")
+                        conn.commit()
+                        sessions_exists_in_database.append(session)
+                    else:
+                        print(f"Wrong session {session}")
+                        wrong_sessions.append(session)
+                cur.close()
                 good_sessions_len = len(sessions_exists_in_database)
                 if len(wrong_sessions) > 0:
                     flash(
@@ -69,23 +102,11 @@ def addComment():
             else:
                 flash("You didn't provide sessions amigo", 'error')
                 return render_template('index.html')
-
         return render_template('index.html', sessions_exists_in_database=sessions_exists_in_database,
                                wrong_sessions=wrong_sessions, option=comment_to_selects)
 
+
 if __name__ == '__name__':
     app.run()
-# Getting current list of sessions
-def prepareSessions(sessions_without_quote):
-    if ', ' in sessions_without_quote:
-        result = sessions_without_quote.split(', ')
-    elif ',' in sessions_without_quote:
-        result = sessions_without_quote.split(',')
-    elif '\t' in sessions_without_quote:
-        result = sessions_without_quote.split('\t')
-    elif '\n' in sessions_without_quote:
-        result = sessions_without_quote.split('\n')
-    else:
-        result = sessions_without_quote.split(' ')
 
-    return result
+
