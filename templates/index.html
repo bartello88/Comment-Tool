@@ -55,11 +55,11 @@
             </ul>
         </div>
     {% endif %}
-    {% if wrong_sessions %}
+    {% if wrongs %}
         <div class="session-list wrong-sessions">
             <legend>Wrong</legend>
                  <ul>
-                {% for session in wrong_sessions %}
+                {% for session in wrongs %}
                      <li><p><b>{{session}}</b>: no connection or session doesn't exist in database</p></li>
                 {% endfor %}
             </ul>
