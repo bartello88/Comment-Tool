@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, jsonify
+from flask import Flask, render_template, request, flash
 import psycopg2
 from pattern import check_pattern
 #--------------------------------------------------------
@@ -100,7 +100,7 @@ def addComment():
                 good_sessions_len = len(sessions_exists_in_database)
                 if len(wrongs) > 0:
                     flash(
-                        f"You have just commented {good_sessions_len} sessions and have {len(wrong_sessions)} issue(s)",
+                        f"You have just commented {good_sessions_len} sessions and have {len(wrongs)} issue(s)",
                         'warning')
                 else:
                     flash(f"You have just commented {good_sessions_len} sessions", 'success')
