@@ -105,13 +105,13 @@ def addComment():
                 else:
                     flash(f"You have just commented {good_sessions_len} sessions", 'success')
             else:
-                flash("You didn't provide sessions amigo", 'error')
+                flash("You didn't provide sessions amigo", 'warning')
                 return render_template('index.html')
         return render_template('index.html', sessions_exists_in_database=sessions_exists_in_database,
                                wrongs=wrongs, option=comment_to_selects)
 
 
 if __name__ == '__name__':
-    app.run()
+    app.run(DEBUG=True)
 
 
