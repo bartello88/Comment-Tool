@@ -32,7 +32,7 @@ app.secret_key = 'don tell anybody'
 # schema = 'moma_reporting'
 # # Map datatable to class
 # Base = automap_base()
-# engine = create_engine('postgresql+psycopg2://sxd:sxd@plsrvup-sxd01.ttg.global/statistics',connect_args={'options':'-csearch_path={}'.format(schema)})
+# engine = create_engine('postgresql+psycopg2://sxd:',connect_args={'options':'-csearch_path={}'.format(schema)})
 # Base.prepare(engine, reflect=True)
 # # table_name = f"Base.classes.{connection['table_name']}"
 # Sessions = Base.classes.comments
@@ -68,7 +68,7 @@ def addComment():
         if 'comment' in request.form:
             if request.form['text']:
                 try:
-                    connection_string = "dbname='statistics' user='sxd' host='plsrvup-sxd01.ttg.global' password='sxd'"
+                    connection_string = "dbname='' user='' host='' password=''"
                     conn = psycopg2.connect(connection_string)
                     print("Database connected")
                 except Exception as e:
